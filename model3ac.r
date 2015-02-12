@@ -33,7 +33,7 @@ for (i in 1 : length (in.sample.estimate)) {
   in.sample.estimate[[i]] <- exp (combo.count.log.plus1.estimate[k, l]) - 1
 }
   
-rmsle (train.train$count, in.sample.estimate)
+print (sprintf ("rmsle (train.train$count, in.sample.estimate)=%f", rmsle (train.train$count, in.sample.estimate)))
 
 train.test.1 <- as.vector (train.test[, 1])
 train.test.timestamp <- strptime (train.test.1, "%Y-%m-%d %H:%M:%S")
@@ -46,7 +46,7 @@ for (i in 1 : length (out.of.sample.estimate)) {
   out.of.sample.estimate[[i]] <- exp (combo.count.log.plus1.estimate[k, l]) - 1
 }
 
-rmsle (train.test$count, out.of.sample.estimate)
+print (sprintf ("rmsle (train.test$count, out.of.sample.estimate)=%f", rmsle (train.test$count, out.of.sample.estimate)))
 
 my.sle <- sle (train.test$count, out.of.sample.estimate)
 summary (my.sle)
@@ -105,7 +105,13 @@ for (i in 1:24) {
 
 predict.in.sample.combined <- exp (log (in.sample.estimate + 1) + predict.residual.in.sample) - 1
 
-rmsle (train.train$count, predict.in.sample.combined)
+print (sprintf ("rmsle (train.train$count, predict.in.sample.combined)=%f", rmsle (train.train$count, predict.in.sample.combined)))
+
+errors.in.sample.combined <- predict.in.sample.combined - train.train$count
+
+print ("try this: plot (train.train.timestamp, errors.in.sample.combined)")
+
+print ("try this: plot (train.train$count, errors.in.sample.combined)")
 
 # rmsle for combined model out of sample
 
@@ -139,5 +145,5 @@ for (i in 1:24) {
 
 predict.out.of.sample.combined <- exp (log (out.of.sample.estimate + 1) + predict.residual.out.of.sample) - 1
 
-rmsle (train.test$count, predict.out.of.sample.combined)
+print (sprintf ("rmsle (train.test$count, predict.out.of.sample.combined)=%f", rmsle (train.test$count, predict.out.of.sample.combined)))
 
